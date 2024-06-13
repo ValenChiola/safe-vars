@@ -1,0 +1,31 @@
+{
+  "name": "safe-vars",
+  "version": "0.0.1",
+  "description": "Wrapper for dotenv.config() that parses the result and sets the values in process.env",
+  "main": "/lib/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev:build": "pnpm run build --watch --preserveWatchOutput",
+    "dev:start": "pnpm run start --watch",
+    "dev": "run-p dev:*",
+    "test": "pnpm run build && node --test dist/index.test.js"
+  },
+  "keywords": [
+    ".env",
+    "dotenv",
+    "zod"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "run-p": "^0.0.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  }
+}
