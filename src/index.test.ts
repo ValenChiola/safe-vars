@@ -3,7 +3,7 @@ import safeVars, { z } from "./index.js";
 
 import { equal } from "node:assert";
 
-describe("SaveVars", () => {
+describe("SafeVars", () => {
   it("Should parsed correctly", () => {
     const schema = z.object({
       VARIABLE1: z.string(),

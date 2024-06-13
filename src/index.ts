@@ -10,14 +10,14 @@ config({ processEnv: rawEnvs });
  * Wrapper for dotenv.config() that parses the result and sets the values in process.env
  *
  * E.g:
- *  import saveVars, { z } from "safe-vars";
+ *  import safeVars, { z } from "@valentino.chiola/safe-vars";
  *
  *  const schema = z.object({
  *   VARIABLE1: z.string(),
  *   VARIABLE2: z.string()
  *  });
  *
- *  saveVars(schema);
+ *  safeVars(schema);
  *
  *  console.log(process.env);
  *
