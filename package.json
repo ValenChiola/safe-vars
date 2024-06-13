@@ -1,6 +1,6 @@
 {
   "name": "safe-vars",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrapper for dotenv.config() that parses the result and sets the values in process.env",
   "main": "/lib/index.js",
   "type": "module",
