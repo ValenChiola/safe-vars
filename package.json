@@ -1,9 +1,10 @@
 {
-  "name": "safe-vars",
-  "version": "0.0.2",
+  "name": "@valentino.chiola/safe-vars",
+  "version": "0.0.3",
   "description": "Wrapper for dotenv.config() that parses the result and sets the values in process.env",
   "main": "/lib/index.js",
   "type": "module",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ValenChiola/safe-vars.git"
