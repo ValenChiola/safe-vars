@@ -4,6 +4,10 @@
   "description": "Wrapper for dotenv.config() that parses the result and sets the values in process.env",
   "main": "/lib/index.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ValenChiola/safe-vars.git"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
