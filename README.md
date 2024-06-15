@@ -1,6 +1,8 @@
 <br style="padding: 50px 0;"/>
 <br style="padding: 50px 0;"/>
-
+<h1 align="center">
+  Safe Vars
+</h1>
 <p align="center">
     <a href="https://www.npmjs.com/package/@valentino.chiola/safe-vars">
         <img src="https://img.shields.io/npm/d18m/%40galiprandi%2Freact-tools?style=for-the-badge&logo=npm&color=CB3837" alt="NPM Downloads"/>
@@ -36,7 +38,7 @@ import safeVars, { z } from "@valentino.chiola/safe-vars";
 const schema = z.object({
   VARIABLE1: z.string(),
   VARIABLE2: z.string(),
-  NEEDS_TO_BE_BOOLEAN: z.coerce.boolean()
+  BOOLEAN: z.coerce.boolean()
 });
 
 safeVars(schema)
@@ -46,7 +48,69 @@ console.log(process.env)
 
 If in your `.env` file you have declared `VARIABLE1` and `VARIABLE2`, it won't throw an error.
 
-> Note: any extra variables in your `.env`, that it is not present in the `schema`, will be removed.
+> Note: any extra variables in your `.env`, that are not present in the `schema`, will be removed.
+> Note: if the `BOOLEAN` variable is not defined, `zod` will cast it to `false`.
+
+## Options
+
+- `inject`: If true, the variables will be injected in the `process.env` object. `Default: true`
+
+```ts
+import safeVars, { z } from "@valentino.chiola/safe-vars";
+
+const schema = z.object({
+  VARIABLE1: z.string(),
+});
+
+const env = safeVars(schema, { inject: false })
+
+console.log(env.VARIABLE1) // VARIABLE 1
+console.log(process.env.VARIABLE1) // undefined
+```
+
+- `log`: If true, the variables will be logged in the console. `Default: false`.
+  `Warning`: This option should be used for debugging purposes only.
+
+```ts
+import safeVars, { z } from "@valentino.chiola/safe-vars";
+
+const schema = z.object({
+  VARIABLE1: z.string(),
+});
+
+safeVars(schema, { log: true })
+```
+
+- `throw`: If false, it won't throw an error if the variables are not defined in the `.env` file, `but all the variables would be optional`. `Default: true`
+
+```ts
+import safeVars, { z } from "@valentino.chiola/safe-vars";
+
+const schema = z.object({
+  VARIABLE1: z.string(),
+});
+
+export const env = safeVars(schema, { throw: false });
+```
+
+The type of `env.VARIABLE1` will be `string | undefined`
+
+- `dotenv`: An object that represents the options for the `dotenv` package.
+  - `path`: You can use the `path` key to determine witch `.env` file should be parsed. This is useful for testing.
+
+  ```ts
+  import safeVars, { z } from "@valentino.chiola/safe-vars";
+
+  const schema = z.object({
+    VARIABLE1: z.string(),
+  });
+
+  export const env = safeVars(schema, {
+    dotenv: {
+      path: ".env.test",
+    }
+  });
+  ```
 
 ## Typed Envs
 
@@ -55,9 +119,10 @@ The are two ways to have your envs typed.
 - `declare module`:
   
 ```ts
+import safeVars, { z } from "@valentino.chiola/safe-vars";
+
 const schema = z.object({
   VARIABLE1: z.string(),
-  VARIABLE2: z.string(),
 });
 
 safeVars(schema);
@@ -71,16 +136,17 @@ declare global {
 
 - `return value`:
 
-Instead of using `process.env` you can use the return value of the function `safeVars`.
+Instead of using `process.env` you can use the `safeVars`'s return value.
   
 ```ts
 const schema = z.object({
   VARIABLE1: z.string(),
-  VARIABLE2: z.string(),
 });
 
-export const env = safeVars(schema);
+export const env = safeVars(schema, { inject: false });
 ```
+
+The type of `env.VARIABLE1` will be `string`
 
 ## Contribution
 

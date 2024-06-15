@@ -16,6 +16,7 @@
     "dev:start": "pnpm run start --watch",
     "dev": "run-p dev:*",
     "test": "pnpm run build && node --test dist/index.test.js",
+    "playground": "pnpm run build && node dist/playground.js",
     "publish": "npm publish --access=public"
   },
   "keywords": [
