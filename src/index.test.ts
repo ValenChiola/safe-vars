@@ -2,11 +2,11 @@ import { describe, it } from "node:test";
 import { doesNotThrow, equal, throws } from "node:assert";
 import safeVars, { SafeVarsOptions, z } from "./index.js";
 
-const options: SafeVarsOptions = {
+const options = {
   dotenv: {
     path: ".env.test",
   },
-};
+} satisfies SafeVarsOptions;
 
 describe("SafeVars", () => {
   it("Should parsed correctly", () => {
@@ -41,6 +41,42 @@ describe("SafeVars", () => {
     });
 
     doesNotThrow(() => safeVars(schema, { ...options, throw: false }));
+  });
+
+  it("Should called the callbacks", () => {
+    const schema = z.object({
+      VARIABLE1: z.string(),
+      VARIABLE2: z.string(),
+    });
+
+    let onSuccessCalled = false;
+    let onErrorCalled = false;
+
+    const onSuccess = () => (onSuccessCalled = true);
+    const onError = () => (onErrorCalled = true);
+
+    safeVars(schema, { ...options, onSuccess, onError });
+
+    equal(onSuccessCalled, true, "onSuccess should be called");
+    equal(onErrorCalled, false, "onError should not be called");
+
+    onSuccessCalled = false;
+    onErrorCalled = false;
+
+    const errorSchema = z.object({
+      VARIABLE1: z.string(),
+      VARIABLE2: z.string(),
+      VARIABLE3: z.string(),
+    });
+
+    try {
+      safeVars(errorSchema, { ...options, onSuccess, onError });
+    } catch (e) {
+      // Expected error
+    }
+
+    equal(onSuccessCalled, false, "onSuccess should not be called on error");
+    equal(onErrorCalled, true, "onError should be called");
   });
 
   it("Should be well typed", () => {

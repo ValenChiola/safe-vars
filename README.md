@@ -62,7 +62,7 @@ const schema = z.object({
   VARIABLE1: z.string(),
 });
 
-const env = safeVars(schema, { inject: false })
+export const env = safeVars(schema, { inject: false })
 
 console.log(env.VARIABLE1) // VARIABLE 1
 console.log(process.env.VARIABLE1) // undefined
@@ -90,10 +90,38 @@ const schema = z.object({
   VARIABLE1: z.string(),
 });
 
-export const env = safeVars(schema, { throw: false });
+safeVars(schema, { throw: false });
 ```
 
 The type of `env.VARIABLE1` will be `string | undefined`
+
+- `onSuccess`: Callback function to be executed if all environment variables are successfully validated.
+
+```ts
+import safeVars, { z } from "@valentino.chiola/safe-vars";
+
+const schema = z.object({
+  VARIABLE1: z.string(),
+});
+
+safeVars(schema, {
+  onSuccess: (env) => console.log("🚀 Envs loaded!"),
+});
+```
+
+- `onError`: Callback function to be executed if there are errors in the validation.
+
+```ts
+import safeVars, { z } from "@valentino.chiola/safe-vars";
+
+const schema = z.object({
+  VARIABLE1: z.string(),
+});
+
+safeVars(schema, {
+  onError: (errors) => console.error("❌ Error loading envs", errors),
+});
+```
 
 - `dotenv`: An object that represents the options for the `dotenv` package.
   - `path`: You can use the `path` key to determine witch `.env` file should be parsed. This is useful for testing.
@@ -105,7 +133,7 @@ The type of `env.VARIABLE1` will be `string | undefined`
     VARIABLE1: z.string(),
   });
 
-  export const env = safeVars(schema, {
+  safeVars(schema, {
     dotenv: {
       path: ".env.test",
     }
