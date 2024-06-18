@@ -3,3 +3,4 @@ dist
 playground.ts
 .env.local
 .env.test
+pnpm-lock.yaml
